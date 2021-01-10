@@ -1,0 +1,12 @@
+{
+  "slave": {
+    "url": "http://localhost:8081/auth/",
+    "realm": "slave",
+    "clientId": "react-app-slave"
+  },
+  "master": {
+    "url": "http://localhost:8081/auth/",
+    "realm": "master",
+    "clientId": "react-app"
+  }
+}

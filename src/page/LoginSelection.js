@@ -1,13 +1,6 @@
-import {useEffect} from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Box, Container, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import Keycloak from "keycloak-js";
+import { initKeycloakWithConfig } from "../keycloak";
 import {
   ArrowForwardRounded,
   BusinessRounded,
@@ -15,6 +8,28 @@ import {
 } from "@material-ui/icons";
 
 const useStyles = makeStyles({
+  root: {
+    display: "flex",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: "90vh",
+    flexDirection: "column",
+  },
+  textBox: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loginContainer:{
+    display: "flex",
+    flex: 1,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    flexDirection: "column",
+    backgroundColor: "#E5E5E5",
+    borderRadius: 25,
+  },
   optionStyle: {
     display: "flex",
     flexDirection: "column",
@@ -30,74 +45,22 @@ const useStyles = makeStyles({
   },
 });
 
-
 export default function LoginSelection() {
-
-
-    useEffect(() => {
-        console.log('LoginSelection')
-    }, [])
   const classes = useStyles();
 
   return (
-    <Container
-      style={{
-        display: "flex",
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        height: "90vh",
-        flexDirection: "column",
-      }}
-    >
-      <Box
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+    <Container className={classes.root}>
+      <Box className={classes.textBox}>
         <Typography variant="h4" style={{ textAlign: "left", padding: 24 }}>
           Escolha como deseja realizar login
         </Typography>
       </Box>
       <Container
-        style={{
-          display: "flex",
-          flex: 1,
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          flexDirection: "column",
-          backgroundColor: "#E5E5E5",
-          borderRadius: 25,
-        }}
+        className={classes.loginContainer}
       >
         <Box
           className={classes.optionStyle}
-          onClick={() => {
-            localStorage.setItem("config", "slave");
-            const keycloak = new Keycloak({
-              url: "http://localhost:8081/auth/",
-              realm: "slave",
-              clientId: "react-app-slave",
-            });
-
-            keycloak
-              .init({
-                url: "http://localhost:8081/auth/",
-                realm: "slave",
-                clientId: "react-app-slave",
-              })
-              .then((logged) => {
-                if (!logged) {
-                  console.log("nao logado indo pro login como slave");
-                  keycloak.login({ redirectUri: "http://172.18.92.4:3000/" });
-                } else {
-                  console.log("teste");
-                  window.location.href = "/";
-                }
-              });
-          }}
+          onClick={() => initKeycloakWithConfig("slave")}
         >
           <Box style={{ flex: 1, display: "flex" }}>
             <PersonRounded
@@ -131,31 +94,7 @@ export default function LoginSelection() {
         </Box>
         <Box
           className={classes.optionStyle}
-          onClick={() => {
-            localStorage.setItem("config", "master");
-
-            const keycloak = new Keycloak({
-              url: "http://localhost:8081/auth/",
-              realm: "master",
-              clientId: "react-app",
-            });
-
-            keycloak
-              .init({
-                url: "http://localhost:8081/auth/",
-                realm: "master",
-                clientId: "react-app",
-              })
-              .then((logged) => {
-                if (!logged) {
-                  console.log("nao logado indo pro login como master");
-                  keycloak.login({ redirectUri: "http://172.18.92.4:3000/" });
-                } else {
-                  console.log("teste");
-                  window.location.href = "/";
-                }
-              });
-          }}
+          onClick={() => initKeycloakWithConfig("master")}
         >
           <Box style={{ flex: 1, display: "flex" }}>
             <BusinessRounded

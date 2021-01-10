@@ -1,12 +1,11 @@
 import { Button, Container, Grid, Typography } from "@material-ui/core";
 import { useKeycloak } from "@react-keycloak/web";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 const HomePage = () => {
   const { keycloak } = useKeycloak();
-
   const [user, setUser] = useState();
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!keycloak.authenticated) {
       window.location.href = "/login";
     } else {
@@ -15,6 +14,7 @@ const HomePage = () => {
   }, [keycloak]);
 
   return (
+    user ?
     <Container
       style={{
         display: "flex",
@@ -35,14 +35,14 @@ const HomePage = () => {
           backgroundColor: "#E5E5E5",
           borderRadius: 24,
         }}
-        spacing="3"
+        spacing={3}
       >
-        <Grid item xs="3">
+        <Grid item xs={3}>
           <Typography style={{ fontSize: 25 }}>
             {`Usuario ${!keycloak.authenticated ? "NOT " : ""}autenticado`}
           </Typography>
         </Grid>
-        <Grid item xs="3">
+        <Grid item xs={3}>
           {!keycloak.authenticated && (
             <button type="button" onClick={() => keycloak.login()}>
               Login
@@ -53,8 +53,8 @@ const HomePage = () => {
         <Grid
           container
           item
-          xs="6"
-          spacing="4"
+          xs={6}
+          spacing={4}
           style={{
             backgroundColor: "white",
             flex: 1,
@@ -77,8 +77,8 @@ const HomePage = () => {
         <Grid
           container
           item
-          xs="6"
-          spacing="4"
+          xs={6}
+          spacing={4}
           style={{
             backgroundColor: "white",
             flex: 1,
@@ -98,7 +98,7 @@ const HomePage = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs="3">
+        <Grid item xs={3}>
           {!!keycloak.authenticated && (
             <Button
               variant={"outlined"}
@@ -112,7 +112,7 @@ const HomePage = () => {
           )}
         </Grid>
       </Grid>
-    </Container>
+    </Container> : <></>
   );
 };
 
