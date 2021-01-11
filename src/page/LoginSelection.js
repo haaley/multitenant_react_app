@@ -6,6 +6,8 @@ import {
   BusinessRounded,
   PersonRounded,
 } from "@material-ui/icons";
+import { useKeycloak } from "@react-keycloak/web";
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -21,7 +23,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
   },
-  loginContainer:{
+  loginContainer: {
     display: "flex",
     flex: 1,
     justifyContent: "space-evenly",
@@ -47,17 +49,17 @@ const useStyles = makeStyles({
 
 export default function LoginSelection() {
   const classes = useStyles();
+  const { keycloak } = useKeycloak();
 
-  return (
+
+  return !keycloak.authenticated ? (
     <Container className={classes.root}>
       <Box className={classes.textBox}>
         <Typography variant="h4" style={{ textAlign: "left", padding: 24 }}>
           Escolha como deseja realizar login
         </Typography>
       </Box>
-      <Container
-        className={classes.loginContainer}
-      >
+      <Container className={classes.loginContainer}>
         <Box
           className={classes.optionStyle}
           onClick={() => initKeycloakWithConfig("slave")}
@@ -128,5 +130,7 @@ export default function LoginSelection() {
         </Box>
       </Container>
     </Container>
+  ) : (
+    <Redirect to="/" />
   );
 }
